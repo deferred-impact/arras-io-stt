@@ -88,6 +88,20 @@
         }
     })();
 
+    let speech = document.createElement('div');
+    speech.innerText = ""
+    speech.style.zIndex = "10"
+    speech.style.userSelect = "none"
+    speech.style.pointerEvents = "none"
+    speech.style.margin = "auto"
+    speech.style.position = "absolute"
+    speech.style.textAlign = "center"
+    speech.style.top = "75%"
+    speech.style.width = "100%"
+    speech.style.scale = "150%"
+    speech.style.backgroundColor = "#ffffff"
+    document.body.appendChild(speech);
+
     function timeout(ms) {
         return new Promise(resolve => setTimeout(resolve, ms));
     }
@@ -112,9 +126,27 @@
         return text;
     }
 
+    let sayLock = false;
+    window.addEventListener("wheel", event => {
+        if (event.deltaY < 0) {
+            // scroll up
+            if (!sayLock) {
+                sayLock = true;
+                (async () => {
+                    let said = await window.say(speech.innerText);
+                    speech.innerText = speech.innerText.substring(said.length);
+                    sayLock = false;
+                })();
+            }
+        } else if (event.deltaY > 0) {
+            // scroll down
+            speech.innerText = "";
+        }
+    });
+
     (async () => {
         await timeout(1000);
         const exampleSocket = new WebSocket("ws://localhost:23023/")
-        exampleSocket.onmessage = msg => window.say(msg.data)
+        exampleSocket.onmessage = msg => { speech.innerText += " " + msg.data };
     })();
 })();

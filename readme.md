@@ -16,6 +16,8 @@ Install Python dependencies. `pip3 install openai-whisper` and then whatever els
 
 Once you have all the dependencies, run `livewhisper.py`, *then* refresh arras.io tab so that the Tampermonkey script connects to it. This Python script records audio from your microphone and repeatedly sends it to Whisper, OpenAI's speech recognition system.
 
+Speaking into the mic, you will notice the words appear in a line at the bottom of the screen. You can then commit them by scrolling up, or discard them by scrolling down.
+
 ## Limitations
 
 You probably will need a quality microphone. I use this thing with a proper $50 mic with a pop filter and a vibration compensating arm, and it works reasonably well. Cheap mics may be too noisy for speech recognition to do its job.
